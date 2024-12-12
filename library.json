@@ -25,7 +25,7 @@
     "license": "MIT",
     "homepage": "https://www.helloworld.org/",
     "dependencies": {
-      "https://github.com/DaveGamble/cJSON": "*"
+        "external-repo": "https://github.com/DaveGamble/cJSON.git"
     },
     "frameworks": ["espidf"],
     "platforms": ["espressif32"]
