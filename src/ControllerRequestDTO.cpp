@@ -11,11 +11,24 @@ int ControllerRequestDTO::getCounter()
 }
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
-    if (*joystickLeft == *(other.joystickLeft) && *joystickRight == *(other.joystickRight))
-    {
-        return true;
+    // Vérifie si les deux pointeurs `joystickLeft` sont nuls
+    if (joystickLeft == nullptr && other.joystickLeft == nullptr) {
+    } else if (joystickLeft == nullptr || other.joystickLeft == nullptr) {
+        return false; // Un pointeur est nul, l'autre ne l'est pas
+    } else if (!(*joystickLeft == *(other.joystickLeft))) {
+        return false;
     }
-    return false;
+
+    // Vérifie si les deux pointeurs `joystickRight` sont nuls
+    if (joystickRight == nullptr && other.joystickRight == nullptr) {
+    } else if (joystickRight == nullptr || other.joystickRight == nullptr) {
+        return false; // Un pointeur est nul, l'autre ne l'est pas
+    } else if (!(*joystickRight == *(other.joystickRight))) {
+        return false;
+    }
+
+    // Si tout est égal
+    return true;
 }
 cJSON* ControllerRequestDTO::toJson() const
 {
