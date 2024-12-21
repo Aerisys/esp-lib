@@ -11,13 +11,17 @@ int ControllerRequestDTO::getCounter()
 }
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
-    if (joystickLeft == nullptr || other.joystickLeft == nullptr) {
+    // Vérifie si les deux pointeurs `joystickLeft` sont nuls
+    if (joystickLeft == nullptr && other.joystickLeft == nullptr) {
+    } else if (joystickLeft == nullptr || other.joystickLeft == nullptr) {
         return false; // Un pointeur est nul, l'autre ne l'est pas
     } else if (!(*joystickLeft == *(other.joystickLeft))) {
         return false;
     }
 
-    if (joystickRight == nullptr || other.joystickRight == nullptr) {
+    // Vérifie si les deux pointeurs `joystickRight` sont nuls
+    if (joystickRight == nullptr && other.joystickRight == nullptr) {
+    } else if (joystickRight == nullptr || other.joystickRight == nullptr) {
         return false; // Un pointeur est nul, l'autre ne l'est pas
     } else if (!(*joystickRight == *(other.joystickRight))) {
         return false;
