@@ -11,7 +11,7 @@ int ControllerRequestDTO::getCounter()
 }
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
-    if (joystickLeft == other.joystickLeft && joystickRight == other.joystickRight)
+    if (*joystickLeft == *(other.joystickLeft) && *joystickRight == *(other.joystickRight))
     {
         return true;
     }
