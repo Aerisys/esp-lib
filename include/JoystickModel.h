@@ -11,9 +11,9 @@ class JoystickModel {
         int x;
         int y;
     
-        JoystickModel(int x, int y, int roomForManeuver = 50);
+        JoystickModel(int x, int y);
         JoystickModel(const JoystickModel& joystickModel);
-        JoystickModel() : x(0), y(0), roomForManeuver(50) {}
+        JoystickModel() : x(0), y(0) {}
     
         bool operator==(const JoystickModel&) const;
     
@@ -21,7 +21,7 @@ class JoystickModel {
         static JoystickModel fromJson(cJSON* json);
     
     private:
-        int roomForManeuver;
+        int roomForManeuver = 50;
     };
 
 #endif

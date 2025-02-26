@@ -1,7 +1,7 @@
 #include "../include/JoystickModel.h"
 
-JoystickModel::JoystickModel(int x, int y, int roomForManeuver)
-    : x(x), y(y), roomForManeuver(roomForManeuver) {}
+JoystickModel::JoystickModel(int x, int y)
+    : x(x), y(y) {}
 
 JoystickModel::JoystickModel(const JoystickModel& joystickModel)
     : x(joystickModel.x), y(joystickModel.y), roomForManeuver(joystickModel.roomForManeuver) {}

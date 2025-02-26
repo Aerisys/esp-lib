@@ -1,9 +1,18 @@
 #include "../include/ControllerRequestDTO.h"
+#include "ControllerRequestDTO.h"
 
 int ControllerRequestDTO::nmbInstanciation = 0;
 ControllerRequestDTO::ControllerRequestDTO()
 {
     counter = ControllerRequestDTO::nmbInstanciation++;
+}
+ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
+{
+    if (other.joystickLeft)
+        joystickLeft = new JoystickModel(*other.joystickLeft);
+    if (other.joystickRight)
+        joystickRight = new JoystickModel(*other.joystickRight);
+    counter = other.counter;
 }
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete joystickLeft;
@@ -34,7 +43,18 @@ bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
     // Si tout est égal
     return true;
 }
-cJSON* ControllerRequestDTO::toJson() const
+ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO &other)
+{
+    if (this != &other) {
+        delete joystickLeft;
+        delete joystickRight;
+        joystickLeft = (other.joystickLeft) ? new JoystickModel(*other.joystickLeft) : nullptr;
+        joystickRight = (other.joystickRight) ? new JoystickModel(*other.joystickRight) : nullptr;
+        counter = other.counter;
+    }
+    return *this;
+}
+cJSON *ControllerRequestDTO::toJson() const
 {
     cJSON* json = cJSON_CreateObject();
 
