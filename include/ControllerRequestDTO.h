@@ -7,6 +7,9 @@ class ControllerRequestDTO {
     public:
         ControllerRequestDTO();
         ~ControllerRequestDTO();  // Destructeur pour libérer la mémoire
+        
+        JoystickModel* joystickLeft = nullptr;
+        JoystickModel* joystickRight = nullptr;
 
         int getCounter() const;
         bool operator==(const ControllerRequestDTO&) const;
@@ -15,8 +18,6 @@ class ControllerRequestDTO {
         static ControllerRequestDTO fromJson(cJSON* json);
 
     private:
-        JoystickModel* joystickLeft = nullptr;
-        JoystickModel* joystickRight = nullptr;
 
         static int nmbInstanciation;
         int counter = 0;
