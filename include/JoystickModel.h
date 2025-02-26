@@ -6,18 +6,22 @@
 #include <iostream>
 #include "cJSON.h"
 
-class JoystickModel{
+class JoystickModel {
     public:
         int x;
         int y;
-        JoystickModel(int x, int y);
-        JoystickModel(JoystickModel* joystickModel);
-        JoystickModel();
-        bool operator==(const JoystickModel& )const;
+    
+        JoystickModel(int x, int y, int roomForManeuver = 50);
+        JoystickModel(const JoystickModel& joystickModel);
+        JoystickModel() : x(0), y(0), roomForManeuver(50) {}
+    
+        bool operator==(const JoystickModel&) const;
+    
         cJSON* toJson() const;
         static JoystickModel fromJson(cJSON* json);
+    
     private:
-        int roomForManeuver = 50;
-};
+        int roomForManeuver;
+    };
 
 #endif

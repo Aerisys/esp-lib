@@ -5,7 +5,11 @@ ControllerRequestDTO::ControllerRequestDTO()
 {
     counter = ControllerRequestDTO::nmbInstanciation++;
 }
-int ControllerRequestDTO::getCounter()
+ControllerRequestDTO::~ControllerRequestDTO() {
+    delete joystickLeft;
+    delete joystickRight;
+}
+int ControllerRequestDTO::getCounter() const
 {
     return counter;
 }
