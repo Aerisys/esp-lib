@@ -12,7 +12,7 @@ class ControllerRequestDTO {
         JoystickModel* joystickLeft = nullptr;
         JoystickModel* joystickRight = nullptr;
 
-        int getCounter() const;
+        uint64_t getCounter() const;
         bool operator==(const ControllerRequestDTO&) const;
         ControllerRequestDTO& operator=(const ControllerRequestDTO&);
 
@@ -21,7 +21,7 @@ class ControllerRequestDTO {
 
     private:
 
-        static int nmbInstanciation;
-        int counter = 0;
+        static uint64_t nmbInstanciation;
+        uint64_t counter = 0;
 };
 #endif

@@ -1,7 +1,7 @@
 #include "../include/ControllerRequestDTO.h"
 #include "ControllerRequestDTO.h"
 
-int ControllerRequestDTO::nmbInstanciation = 0;
+uint64_t ControllerRequestDTO::nmbInstanciation = 0;
 ControllerRequestDTO::ControllerRequestDTO()
 {
     counter = ControllerRequestDTO::nmbInstanciation++;
@@ -18,7 +18,7 @@ ControllerRequestDTO::~ControllerRequestDTO() {
     delete joystickLeft;
     delete joystickRight;
 }
-int ControllerRequestDTO::getCounter() const
+uint64_t ControllerRequestDTO::getCounter() const
 {
     return counter;
 }
