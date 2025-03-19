@@ -16,6 +16,8 @@ ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
 }
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete flightController;
+    delete buttonMotorState;
+    delete buttonEmergencyStop;
 }
 void ControllerRequestDTO::initCounter()
 {
