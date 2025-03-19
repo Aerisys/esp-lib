@@ -12,6 +12,9 @@ class ControllerRequestDTO {
         JoystickModel* joystickLeft = nullptr;
         JoystickModel* joystickRight = nullptr;
 
+        bool* buttonMotorState = nullptr;
+        bool* buttonEmergencyStop = nullptr;
+
         uint64_t getCounter() const;
         bool operator==(const ControllerRequestDTO&) const;
         ControllerRequestDTO& operator=(const ControllerRequestDTO&);

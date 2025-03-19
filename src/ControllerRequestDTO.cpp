@@ -65,6 +65,14 @@ cJSON *ControllerRequestDTO::toJson() const
     if (joystickRight != nullptr) {cJSON_AddItemToObject(json, "joystickRight", joystickRight->toJson());} 
     else {cJSON_AddNullToObject(json, "joystickRight");}
 
+    // Ajout conditionnel de buttonMotorState
+    if (buttonMotorState != nullptr) {cJSON_AddBoolToObject(json, "buttonMotorState", *buttonMotorState);} 
+    else {cJSON_AddNullToObject(json, "buttonMotorState");}
+
+    // Ajout conditionnel de buttonEmergencyStop
+    if (buttonEmergencyStop != nullptr) {cJSON_AddBoolToObject(json, "buttonEmergencyStop", *buttonEmergencyStop);} 
+    else {cJSON_AddNullToObject(json, "buttonEmergencyStop");}
+
     // Ajout du compteur
     cJSON_AddNumberToObject(json, "counter", counter);
 
@@ -83,6 +91,18 @@ ControllerRequestDTO ControllerRequestDTO::fromJson(cJSON* json)
     cJSON* joystickRightJson = cJSON_GetObjectItemCaseSensitive(json, "joystickRight");
     if (cJSON_IsObject(joystickRightJson)) {dto.joystickRight = new JoystickModel(JoystickModel::fromJson(joystickRightJson));} 
     else {dto.joystickRight = nullptr;}
+
+    // Récupération du buttonMotorState
+    cJSON* buttonMotorStateJson = cJSON_GetObjectItemCaseSensitive(json, "buttonMotorState");
+    if (cJSON_IsBool(buttonMotorStateJson)) {
+        *dto.buttonMotorState = buttonMotorStateJson->valueint;
+    }
+
+    // Récupération du buttonEmergencyStop
+    cJSON* buttonEmergencyStopJson = cJSON_GetObjectItemCaseSensitive(json, "buttonEmergencyStop");
+    if (cJSON_IsBool(buttonEmergencyStopJson)) {
+        *dto.buttonEmergencyStop = buttonEmergencyStopJson->valueint;
+    }
 
     // Récupération du compteur
     cJSON* counterJson = cJSON_GetObjectItemCaseSensitive(json, "counter");
