@@ -66,14 +66,14 @@ ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO
 void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joystickModelLeft, JoystickModel joystickModelRight)
 {
     // Valeurs maximales des joysticks
-    const float JOYSTICK_MAX = 4000.0f;  
-    const float JOYSTICK_MID = JOYSTICK_MAX / 2.0f; // Centre des joysticks (2000)
+    
+    const float JOYSTICK_MID = JoystickModel::JOYSTICK_MAX / 2.0f; // Centre des joysticks (2000)
 
     // Normalisation des valeurs (-1.0 à 1.0 pour pitch, roll et yaw)
     float pitch    = (joystickModelLeft.y  - JOYSTICK_MID) / JOYSTICK_MID;   // Avant / arrière
     float roll     = (joystickModelLeft.x  - JOYSTICK_MID) / JOYSTICK_MID;   // Gauche / droite
     float yaw      = (joystickModelRight.x - JOYSTICK_MID) / JOYSTICK_MID;   // Rotation
-    float throttle = joystickModelRight.y / JOYSTICK_MAX;                    // Monter / descendre (0 à 1)
+    float throttle = joystickModelRight.y / JoystickModel::JOYSTICK_MAX;     // Monter / descendre (0 à 1)
 
     flightController = new FlightController(pitch, roll, yaw, throttle);
 }
