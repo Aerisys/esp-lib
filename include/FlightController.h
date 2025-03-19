@@ -12,11 +12,12 @@ class FlightController {
     public:
         FlightController();
         FlightController(const FlightController& flightController);
-        FlightController(float pitch, float rool, float yaw);
+        FlightController(float pitch, float rool, float yaw, float throttle);
     
         float pitch; // Tangage
         float roll;  // Roulis
         float yaw;   // Lacet
+        float throttle;
 
         bool operator==(const FlightController&) const;
     

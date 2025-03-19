@@ -2,6 +2,7 @@
 #define Controller_Request_DTO_H
 #include <FlightController.h>
 #include <esp_log.h>
+#include <JoystickModel.h>
 
 class ControllerRequestDTO {
     public:
@@ -20,6 +21,7 @@ class ControllerRequestDTO {
         bool operator==(const ControllerRequestDTO&) const;
         ControllerRequestDTO& operator=(const ControllerRequestDTO&);
 
+        void ConvertJoyStickToFlightController(JoystickModel joystickModelLeft,JoystickModel joystickModelRight);
         cJSON* toJson() const;
         static ControllerRequestDTO fromJson(cJSON* json);
 
