@@ -8,6 +8,8 @@ class ControllerRequestDTO {
         ControllerRequestDTO();
         ControllerRequestDTO(const ControllerRequestDTO& other);
         ~ControllerRequestDTO();  // Destructeur pour libérer la mémoire
+
+        void initCounter();
         
         JoystickModel* joystickLeft = nullptr;
         JoystickModel* joystickRight = nullptr;

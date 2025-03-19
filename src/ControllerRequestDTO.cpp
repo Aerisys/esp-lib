@@ -4,7 +4,6 @@
 uint64_t ControllerRequestDTO::nmbInstanciation = 0;
 ControllerRequestDTO::ControllerRequestDTO()
 {
-    counter = ControllerRequestDTO::nmbInstanciation++;
 }
 ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
 {
@@ -17,6 +16,10 @@ ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete joystickLeft;
     delete joystickRight;
+}
+void ControllerRequestDTO::initCounter()
+{
+    counter = ControllerRequestDTO::nmbInstanciation++;
 }
 uint64_t ControllerRequestDTO::getCounter() const
 {
