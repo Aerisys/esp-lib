@@ -73,7 +73,7 @@ void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joyst
     float pitch    = (joystickModelLeft.y  - JOYSTICK_MID) / JOYSTICK_MID;   // Avant / arrière
     float roll     = (joystickModelLeft.x  - JOYSTICK_MID) / JOYSTICK_MID;   // Gauche / droite
     float yaw      = (joystickModelRight.x - JOYSTICK_MID) / JOYSTICK_MID;   // Rotation
-    float throttle = joystickModelRight.y / JoystickModel::JOYSTICK_MAX;     // Monter / descendre (0 à 1)
+    float throttle = (joystickModelRight.y - JOYSTICK_MID) / JOYSTICK_MID;   // Monter / descendre
 
     flightController = new FlightController(pitch, roll, yaw, throttle);
 }
