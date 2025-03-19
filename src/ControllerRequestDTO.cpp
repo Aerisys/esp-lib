@@ -7,15 +7,15 @@ ControllerRequestDTO::ControllerRequestDTO()
 }
 ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
 {
-    if (other.joystickLeft)
-        joystickLeft = new JoystickModel(*other.joystickLeft);
-    if (other.joystickRight)
-        joystickRight = new JoystickModel(*other.joystickRight);
+    if (other.flightController)
+    flightController = new FlightController(*other.flightController);
+
+    buttonEmergencyStop = other.buttonEmergencyStop;
+    buttonMotorState=other.buttonMotorState;
     counter = other.counter;
 }
 ControllerRequestDTO::~ControllerRequestDTO() {
-    delete joystickLeft;
-    delete joystickRight;
+    delete flightController;
 }
 void ControllerRequestDTO::initCounter()
 {
@@ -28,18 +28,26 @@ uint64_t ControllerRequestDTO::getCounter() const
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
     // Vérifie si les deux pointeurs `joystickLeft` sont nuls
-    if (joystickLeft == nullptr && other.joystickLeft == nullptr) {
-    } else if (joystickLeft == nullptr || other.joystickLeft == nullptr) {
+    if (flightController == nullptr && other.flightController == nullptr) {
+    } else if (flightController == nullptr || other.flightController == nullptr) {
         return false; // Un pointeur est nul, l'autre ne l'est pas
-    } else if (!(*joystickLeft == *(other.joystickLeft))) {
+    } else if (!(*flightController == *(other.flightController))) {
         return false;
     }
 
-    // Vérifie si les deux pointeurs `joystickRight` sont nuls
-    if (joystickRight == nullptr && other.joystickRight == nullptr) {
-    } else if (joystickRight == nullptr || other.joystickRight == nullptr) {
+    // Vérifie si les deux pointeurs `buttonEmergencyStop` sont nuls
+    if (buttonEmergencyStop == nullptr && other.buttonEmergencyStop == nullptr) {
+    } else if (buttonEmergencyStop == nullptr || other.buttonEmergencyStop == nullptr) {
         return false; // Un pointeur est nul, l'autre ne l'est pas
-    } else if (!(*joystickRight == *(other.joystickRight))) {
+    } else if (!(*buttonEmergencyStop == *(other.buttonEmergencyStop))) {
+        return false;
+    }
+
+    // Vérifie si les deux pointeurs `buttonMotorState` sont nuls
+    if (buttonMotorState == nullptr && other.buttonMotorState == nullptr) {
+    } else if (buttonMotorState == nullptr || other.buttonMotorState == nullptr) {
+        return false; // Un pointeur est nul, l'autre ne l'est pas
+    } else if (!(*buttonMotorState == *(other.buttonMotorState))) {
         return false;
     }
 
@@ -49,10 +57,8 @@ bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO &other)
 {
     if (this != &other) {
-        delete joystickLeft;
-        delete joystickRight;
-        joystickLeft = (other.joystickLeft) ? new JoystickModel(*other.joystickLeft) : nullptr;
-        joystickRight = (other.joystickRight) ? new JoystickModel(*other.joystickRight) : nullptr;
+        delete flightController;
+        flightController = (other.flightController) ? new FlightController(*other.flightController) : nullptr;
         counter = other.counter;
     }
     return *this;
@@ -62,11 +68,8 @@ cJSON *ControllerRequestDTO::toJson() const
     cJSON* json = cJSON_CreateObject();
 
     // Ajout conditionnel des joysticks
-    if (joystickLeft != nullptr) {cJSON_AddItemToObject(json, "joystickLeft", joystickLeft->toJson());} 
-    else {cJSON_AddNullToObject(json, "joystickLeft");}
-
-    if (joystickRight != nullptr) {cJSON_AddItemToObject(json, "joystickRight", joystickRight->toJson());} 
-    else {cJSON_AddNullToObject(json, "joystickRight");}
+    if (flightController != nullptr) {cJSON_AddItemToObject(json, "flightController", flightController->toJson());} 
+    else {cJSON_AddNullToObject(json, "flightController");}
 
     // Ajout conditionnel de buttonMotorState
     if (buttonMotorState != nullptr) {cJSON_AddBoolToObject(json, "buttonMotorState", *buttonMotorState);} 
@@ -86,14 +89,10 @@ ControllerRequestDTO ControllerRequestDTO::fromJson(cJSON* json)
     ControllerRequestDTO dto;
 
     // Récupération de joystickLeft
-    cJSON* joystickLeftJson = cJSON_GetObjectItemCaseSensitive(json, "joystickLeft");
-    if (cJSON_IsObject(joystickLeftJson)) {dto.joystickLeft = new JoystickModel(JoystickModel::fromJson(joystickLeftJson));} 
-    else {dto.joystickLeft = nullptr;}
+    cJSON* flightControllerJson = cJSON_GetObjectItemCaseSensitive(json, "flightController");
+    if (cJSON_IsObject(flightControllerJson)) {dto.flightController = new FlightController(FlightController::fromJson(flightControllerJson));} 
+    else {dto.flightController = nullptr;}
 
-    // Récupération de joystickRight
-    cJSON* joystickRightJson = cJSON_GetObjectItemCaseSensitive(json, "joystickRight");
-    if (cJSON_IsObject(joystickRightJson)) {dto.joystickRight = new JoystickModel(JoystickModel::fromJson(joystickRightJson));} 
-    else {dto.joystickRight = nullptr;}
 
     // Récupération du buttonMotorState
     cJSON* buttonMotorStateJson = cJSON_GetObjectItemCaseSensitive(json, "buttonMotorState");

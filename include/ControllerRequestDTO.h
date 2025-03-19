@@ -1,6 +1,6 @@
 #ifndef Controller_Request_DTO_H
 #define Controller_Request_DTO_H
-#include <JoystickModel.h>
+#include <FlightController.h>
 #include <esp_log.h>
 
 class ControllerRequestDTO {
@@ -11,8 +11,7 @@ class ControllerRequestDTO {
 
         void initCounter();
         
-        JoystickModel* joystickLeft = nullptr;
-        JoystickModel* joystickRight = nullptr;
+        FlightController* flightController = nullptr;
 
         bool* buttonMotorState = nullptr;
         bool* buttonEmergencyStop = nullptr;
