@@ -38,6 +38,7 @@ class ControllerRequestDTO {
         void ConvertJoyStickToFlightController(JoystickModel joystickModelLeft,JoystickModel joystickModelRight);
         ControllerRequestData toStruct() const;
         static ControllerRequestDTO fromStruct(const ControllerRequestData& data);
+        std::string toString() const;
 
     private:
 

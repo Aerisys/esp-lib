@@ -23,3 +23,13 @@ FlightControllerData FlightController::toStruct() const {
 FlightController FlightController::fromStruct(const FlightControllerData& data) {
     return FlightController(data.pitch, data.roll, data.yaw, data.throttle);
 }
+
+std::string FlightController::toString() const
+{
+    std::ostringstream oss;
+    oss << "FlightController(pitch=" << pitch 
+        << ", roll=" << roll 
+        << ", yaw=" << yaw 
+        << ", throttle=" << throttle << ")";
+    return oss.str();
+}

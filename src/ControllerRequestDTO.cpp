@@ -105,3 +105,14 @@ ControllerRequestDTO ControllerRequestDTO::fromStruct(const ControllerRequestDat
 
     return dto;
 }
+
+std::string ControllerRequestDTO::toString() const
+{
+    std::ostringstream oss;
+    oss << "ControllerRequestDTO(counter=" << counter 
+        << ", buttonMotorState=" << (buttonMotorState ? std::to_string(*buttonMotorState) : "null")
+        << ", buttonEmergencyStop=" << (buttonEmergencyStop ? std::to_string(*buttonEmergencyStop) : "null")
+        << ", flightController=" << (flightController ? flightController->toString() : "null") 
+        << ")";
+    return oss.str();
+}

@@ -16,6 +16,8 @@ class JoystickModel {
         JoystickModel() : x(0), y(0) {}
     
         bool operator==(const JoystickModel&) const;
+
+        std::string toString() const;
     
     private:
         int roomForManeuver = 50;

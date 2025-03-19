@@ -26,6 +26,8 @@ class FlightController {
     
         FlightControllerData toStruct() const;
         static FlightController fromStruct(const FlightControllerData& data);
+
+        std::string toString() const;
 };
 
 #endif
