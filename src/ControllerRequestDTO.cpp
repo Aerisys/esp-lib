@@ -113,13 +113,13 @@ ControllerRequestDTO ControllerRequestDTO::fromJson(cJSON* json)
     // Récupération du buttonMotorState
     cJSON* buttonMotorStateJson = cJSON_GetObjectItemCaseSensitive(json, "buttonMotorState");
     if (cJSON_IsBool(buttonMotorStateJson)) {
-        *dto.buttonMotorState = buttonMotorStateJson->valueint;
+        dto.buttonMotorState = new bool(buttonMotorStateJson->valueint);
     }
 
     // Récupération du buttonEmergencyStop
     cJSON* buttonEmergencyStopJson = cJSON_GetObjectItemCaseSensitive(json, "buttonEmergencyStop");
     if (cJSON_IsBool(buttonEmergencyStopJson)) {
-        *dto.buttonEmergencyStop = buttonEmergencyStopJson->valueint;
+        dto.buttonEmergencyStop = new bool(buttonEmergencyStopJson->valueint);
     }
 
     // Récupération du compteur
