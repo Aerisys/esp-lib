@@ -1,50 +1,29 @@
 #include <esp_log.h>
+#include "JoystickModel.h"
+#include "FlightController.h"
 #include "ControllerRequestDTO.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 
 extern "C" void app_main() {
-    ESP_LOGI("TEST", "Démarrage du test de sérialisation");
-    vTaskDelay(pdMS_TO_TICKS(1000));
-
-    // Création d'un FlightController
-    FlightController fc(1.0f, 2.0f, 3.0f, 4.0f);
-    ESP_LOGI("TEST", "FlightController créé : Pitch=%.2f, Roll=%.2f, Yaw=%.2f, Throttle=%.2f",
-             fc.pitch, fc.roll, fc.yaw, fc.throttle);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-
-    // Conversion en structure
-    FlightControllerData fcData = fc.toStruct();
-    ESP_LOGI("TEST", "FlightController converti en structure : Pitch=%.2f, Roll=%.2f, Yaw=%.2f, Throttle=%.2f",
-             fcData.pitch, fcData.roll, fcData.yaw, fcData.throttle);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-
-    // Restauration depuis la structure
-    FlightController fcRestored = FlightController::fromStruct(fcData);
-    ESP_LOGI("TEST", "FlightController restauré : Pitch=%.2f, Roll=%.2f, Yaw=%.2f, Throttle=%.2f",
-             fcRestored.pitch, fcRestored.roll, fcRestored.yaw, fcRestored.throttle);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-
-    // Création d'un ControllerRequestDTO avec un bouton activé
+    // Création du DTO
     ControllerRequestDTO dto;
-    dto.flightController = new FlightController(fc);
+
+    // Création et assignation dynamique du FlightController
+    dto.flightController = new FlightController(1.5, 2.0, -1.2, 3.8);
     dto.buttonMotorState = new bool(true);
     dto.buttonEmergencyStop = new bool(false);
     dto.initCounter();
 
-    ESP_LOGI("TEST", "ControllerRequestDTO créé : Counter=%llu, MotorState=%d, EmergencyStop=%d",
-             dto.getCounter(), *dto.buttonMotorState, *dto.buttonEmergencyStop);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    // Affichage des logs avec `toString()`
+    ESP_LOGI("TEST", "dto: %s", dto.toString().c_str());
 
-    // Conversion en structure
-    ControllerRequestData dtoData = dto.toStruct();
-    ESP_LOGI("TEST", "ControllerRequestDTO converti en structure : Counter=%llu, MotorState=%d, EmergencyStop=%d",
-             dtoData.counter, dtoData.buttonMotorState, dtoData.buttonEmergencyStop);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    
+    ControllerRequestData dtodata = dto.toStruct();
 
-    // Restauration depuis la structure
-    ControllerRequestDTO dtoRestored = ControllerRequestDTO::fromStruct(dtoData);
-    ESP_LOGI("TEST", "ControllerRequestDTO restauré : Counter=%llu, MotorState=%d, EmergencyStop=%d",
-             dtoRestored.getCounter(), *dtoRestored.buttonMotorState, *dtoRestored.buttonEmergencyStop);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    ControllerRequestDTO dto2 = ControllerRequestDTO::fromStruct(dtodata);
+
+    
+    ESP_LOGI("TEST", "dto2: %s", dto2.toString().c_str());
+
+
+    // Pas besoin de delete, le destructeur de `dto` s'en charge
 }

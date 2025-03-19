@@ -21,7 +21,7 @@ ControllerRequestDTO::~ControllerRequestDTO() {
 }
 void ControllerRequestDTO::initCounter()
 {
-    counter = ControllerRequestDTO::nmbInstanciation++;
+    counter = ++ControllerRequestDTO::nmbInstanciation;
 }
 uint64_t ControllerRequestDTO::getCounter() const
 {
@@ -109,7 +109,7 @@ ControllerRequestDTO ControllerRequestDTO::fromStruct(const ControllerRequestDat
 std::string ControllerRequestDTO::toString() const
 {
     std::ostringstream oss;
-    oss << "ControllerRequestDTO(counter=" << counter 
+    oss << "(counter=" << counter 
         << ", buttonMotorState=" << (buttonMotorState ? std::to_string(*buttonMotorState) : "null")
         << ", buttonEmergencyStop=" << (buttonEmergencyStop ? std::to_string(*buttonEmergencyStop) : "null")
         << ", flightController=" << (flightController ? flightController->toString() : "null") 

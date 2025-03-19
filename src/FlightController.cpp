@@ -27,7 +27,7 @@ FlightController FlightController::fromStruct(const FlightControllerData& data) 
 std::string FlightController::toString() const
 {
     std::ostringstream oss;
-    oss << "FlightController(pitch=" << pitch 
+    oss << "(pitch=" << pitch 
         << ", roll=" << roll 
         << ", yaw=" << yaw 
         << ", throttle=" << throttle << ")";

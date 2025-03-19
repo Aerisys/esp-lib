@@ -15,6 +15,6 @@ bool JoystickModel::operator==(const JoystickModel& other) const {
 std::string JoystickModel::toString() const
 {
     std::ostringstream oss;
-    oss << "JoystickModel(x=" << x << ", y=" << y << ")";
+    oss << "(x=" << x << ", y=" << y << ")";
     return oss.str();
 }
