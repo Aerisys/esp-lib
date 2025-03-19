@@ -4,6 +4,20 @@
 #include <esp_log.h>
 #include <JoystickModel.h>
 
+typedef struct {
+    uint64_t counter;
+    
+    bool has_buttonMotorState; // Indicateur de présence
+    bool buttonMotorState;
+
+    bool has_buttonEmergencyStop; // Indicateur de présence
+    bool buttonEmergencyStop;
+
+    bool has_flightController; // Indicateur de présence
+    FlightControllerData flightController;
+} ControllerRequestData;
+
+
 class ControllerRequestDTO {
     public:
         ControllerRequestDTO();
@@ -22,8 +36,8 @@ class ControllerRequestDTO {
         ControllerRequestDTO& operator=(const ControllerRequestDTO&);
 
         void ConvertJoyStickToFlightController(JoystickModel joystickModelLeft,JoystickModel joystickModelRight);
-        cJSON* toJson() const;
-        static ControllerRequestDTO fromJson(cJSON* json);
+        ControllerRequestData toStruct() const;
+        static ControllerRequestDTO fromStruct(const ControllerRequestData& data);
 
     private:
 

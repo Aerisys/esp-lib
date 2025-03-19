@@ -4,7 +4,6 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "cJSON.h"
 
 class JoystickModel {
     public:
@@ -17,9 +16,6 @@ class JoystickModel {
         JoystickModel() : x(0), y(0) {}
     
         bool operator==(const JoystickModel&) const;
-    
-        cJSON* toJson() const;
-        static JoystickModel fromJson(cJSON* json);
     
     private:
         int roomForManeuver = 50;

@@ -79,54 +79,29 @@ void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joyst
 
     flightController = new FlightController(pitch, roll, yaw, throttle);
 }
-cJSON *ControllerRequestDTO::toJson() const
-{
-    cJSON* json = cJSON_CreateObject();
+ControllerRequestData ControllerRequestDTO::toStruct() const {
+    ControllerRequestData data = {};
+    data.counter = counter;
 
-    // Ajout conditionnel des joysticks
-    if (flightController != nullptr) {cJSON_AddItemToObject(json, "flightController", flightController->toJson());} 
-    else {cJSON_AddNullToObject(json, "flightController");}
+    data.has_buttonMotorState = (buttonMotorState != nullptr);
+    if (buttonMotorState) data.buttonMotorState = *buttonMotorState;
 
-    // Ajout conditionnel de buttonMotorState
-    if (buttonMotorState != nullptr) {cJSON_AddBoolToObject(json, "buttonMotorState", *buttonMotorState);} 
-    else {cJSON_AddNullToObject(json, "buttonMotorState");}
+    data.has_buttonEmergencyStop = (buttonEmergencyStop != nullptr);
+    if (buttonEmergencyStop) data.buttonEmergencyStop = *buttonEmergencyStop;
 
-    // Ajout conditionnel de buttonEmergencyStop
-    if (buttonEmergencyStop != nullptr) {cJSON_AddBoolToObject(json, "buttonEmergencyStop", *buttonEmergencyStop);} 
-    else {cJSON_AddNullToObject(json, "buttonEmergencyStop");}
+    data.has_flightController = (flightController != nullptr);
+    if (flightController) data.flightController = flightController->toStruct();
 
-    // Ajout du compteur
-    cJSON_AddNumberToObject(json, "counter", counter);
-
-    return json;
+    return data;
 }
-ControllerRequestDTO ControllerRequestDTO::fromJson(cJSON* json)
-{
+
+ControllerRequestDTO ControllerRequestDTO::fromStruct(const ControllerRequestData& data) {
     ControllerRequestDTO dto;
+    dto.counter = data.counter;
 
-    // Récupération de joystickLeft
-    cJSON* flightControllerJson = cJSON_GetObjectItemCaseSensitive(json, "flightController");
-    if (cJSON_IsObject(flightControllerJson)) {dto.flightController = new FlightController(FlightController::fromJson(flightControllerJson));} 
-    else {dto.flightController = nullptr;}
-
-
-    // Récupération du buttonMotorState
-    cJSON* buttonMotorStateJson = cJSON_GetObjectItemCaseSensitive(json, "buttonMotorState");
-    if (cJSON_IsBool(buttonMotorStateJson)) {
-        dto.buttonMotorState = new bool(buttonMotorStateJson->valueint);
-    }
-
-    // Récupération du buttonEmergencyStop
-    cJSON* buttonEmergencyStopJson = cJSON_GetObjectItemCaseSensitive(json, "buttonEmergencyStop");
-    if (cJSON_IsBool(buttonEmergencyStopJson)) {
-        dto.buttonEmergencyStop = new bool(buttonEmergencyStopJson->valueint);
-    }
-
-    // Récupération du compteur
-    cJSON* counterJson = cJSON_GetObjectItemCaseSensitive(json, "counter");
-    if (cJSON_IsNumber(counterJson)) {
-        dto.counter = counterJson->valueint;
-    }
+    if (data.has_buttonMotorState) dto.buttonMotorState = new bool(data.buttonMotorState);
+    if (data.has_buttonEmergencyStop) dto.buttonEmergencyStop = new bool(data.buttonEmergencyStop);
+    if (data.has_flightController) dto.flightController = new FlightController(FlightController::fromStruct(data.flightController));
 
     return dto;
-};
+}

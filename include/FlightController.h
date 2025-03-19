@@ -4,7 +4,10 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "cJSON.h"
+
+typedef struct {
+    float pitch, roll, yaw, throttle;
+} FlightControllerData;
 
 class FlightController {
     private:
@@ -21,8 +24,8 @@ class FlightController {
 
         bool operator==(const FlightController&) const;
     
-        cJSON* toJson() const;
-        static FlightController fromJson(cJSON* json);
+        FlightControllerData toStruct() const;
+        static FlightController fromStruct(const FlightControllerData& data);
 };
 
 #endif

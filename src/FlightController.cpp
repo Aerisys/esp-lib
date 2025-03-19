@@ -10,32 +10,16 @@ bool FlightController::operator==(const FlightController &other) const {
     return (pitch == other.pitch && roll == other.roll && yaw == other.yaw && throttle == other.throttle);
 }
 
-cJSON *FlightController::toJson() const
-{
-    cJSON* json = cJSON_CreateObject();
-    cJSON_AddNumberToObject(json, "pitch", pitch);
-    cJSON_AddNumberToObject(json, "roll", roll);
-    cJSON_AddNumberToObject(json, "yaw", yaw);
-    cJSON_AddNumberToObject(json, "throttle", throttle);
-    return json;
+FlightControllerData FlightController::toStruct() const {
+    FlightControllerData data = {};
+    data.pitch = pitch;
+    data.roll = roll;
+    data.yaw = yaw;
+    data.throttle = throttle;
+    return data;
 }
 
-FlightController FlightController::fromJson(cJSON *json) {
-    if (!json) return FlightController(); // Vérification du pointeur
 
-    cJSON* pitchJson = cJSON_GetObjectItemCaseSensitive(json, "pitch");
-    cJSON* rollJson = cJSON_GetObjectItemCaseSensitive(json, "roll");
-    cJSON* yawJson = cJSON_GetObjectItemCaseSensitive(json, "yaw");
-    cJSON* throttleJson = cJSON_GetObjectItemCaseSensitive(json, "throttle");
-
-    if (!cJSON_IsNumber(pitchJson) || !cJSON_IsNumber(rollJson) || !cJSON_IsNumber(yawJson)|| !cJSON_IsNumber(throttleJson)) {
-        return FlightController(); // Retourne un objet par défaut si parsing invalide
-    }
-
-    return FlightController(
-        static_cast<float>(pitchJson->valuedouble),
-        static_cast<float>(rollJson->valuedouble),
-        static_cast<float>(yawJson->valuedouble),
-        static_cast<float>(throttleJson->valuedouble)
-    );
+FlightController FlightController::fromStruct(const FlightControllerData& data) {
+    return FlightController(data.pitch, data.roll, data.yaw, data.throttle);
 }
