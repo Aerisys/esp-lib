@@ -5,15 +5,25 @@ uint64_t ControllerRequestDTO::nmbInstanciation = 0;
 ControllerRequestDTO::ControllerRequestDTO()
 {
 }
-ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
-{
+ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
     if (other.flightController)
-    flightController = new FlightController(*other.flightController);
+        flightController = new FlightController(*other.flightController);
+    else
+        flightController = nullptr;
 
-    buttonEmergencyStop = other.buttonEmergencyStop;
-    buttonMotorState=other.buttonMotorState;
+    if (other.buttonEmergencyStop)
+        buttonEmergencyStop = new bool(*other.buttonEmergencyStop);
+    else
+        buttonEmergencyStop = nullptr;
+
+    if (other.buttonMotorState)
+        buttonMotorState = new bool(*other.buttonMotorState);
+    else
+        buttonMotorState = nullptr;
+
     counter = other.counter;
 }
+
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete flightController;
     delete buttonMotorState;
