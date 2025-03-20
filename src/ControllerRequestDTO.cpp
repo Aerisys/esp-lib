@@ -6,23 +6,19 @@ ControllerRequestDTO::ControllerRequestDTO()
 {
 }
 ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
-    if (other.flightController)
-        flightController = new FlightController(*other.flightController);
-    else
-        flightController = nullptr;
+    if (this != &other) {  // Protection auto-référence
+        delete flightController;
+        delete buttonEmergencyStop;
+        delete buttonMotorState;
 
-    if (other.buttonEmergencyStop)
-        buttonEmergencyStop = new bool(*other.buttonEmergencyStop);
-    else
-        buttonEmergencyStop = nullptr;
+        flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
+        buttonEmergencyStop = other.buttonEmergencyStop ? new bool(*other.buttonEmergencyStop) : nullptr;
+        buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
 
-    if (other.buttonMotorState)
-        buttonMotorState = new bool(*other.buttonMotorState);
-    else
-        buttonMotorState = nullptr;
-
-    counter = other.counter;
+        counter = other.counter;
+    }
 }
+
 
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete flightController;
@@ -37,6 +33,21 @@ uint64_t ControllerRequestDTO::getCounter() const
 {
     return counter;
 }
+ControllerRequestDTO& ControllerRequestDTO::operator=(const ControllerRequestDTO &other) {
+    if (this != &other) { // Protection auto-affectation
+        delete flightController;
+        delete buttonEmergencyStop;
+        delete buttonMotorState;
+
+        flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
+        buttonEmergencyStop = other.buttonEmergencyStop ? new bool(*other.buttonEmergencyStop) : nullptr;
+        buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
+
+        counter = other.counter;
+    }
+    return *this;
+}
+
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
     // Vérifie si les deux pointeurs `joystickLeft` sont nuls

@@ -8,9 +8,9 @@ extern "C" void app_main() {
     ControllerRequestDTO dto;
 
     // Création et assignation dynamique du FlightController
-    dto.flightController = new FlightController(1.5, 2.0, -1.2, 3.8);
-    dto.buttonMotorState = new bool(true);
-    dto.buttonEmergencyStop = new bool(false);
+    dto.flightController = nullptr;
+    dto.buttonMotorState = nullptr;
+    dto.buttonEmergencyStop = new bool(true);
     dto.initCounter();
 
     // Affichage des logs avec `toString()`
