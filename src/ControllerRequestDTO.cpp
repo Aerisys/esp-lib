@@ -66,15 +66,6 @@ bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
     // Si tout est égal
     return true;
 }
-ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO &other)
-{
-    if (this != &other) {
-        delete flightController;
-        flightController = (other.flightController) ? new FlightController(*other.flightController) : nullptr;
-        counter = other.counter;
-    }
-    return *this;
-}
 void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joystickModelLeft, JoystickModel joystickModelRight)
 {
     // Valeurs maximales des joysticks

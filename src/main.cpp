@@ -24,6 +24,11 @@ extern "C" void app_main() {
     
     ESP_LOGI("TEST", "dto2: %s", dto2.toString().c_str());
 
+    ControllerRequestDTO dto3 = ControllerRequestDTO(dto2);
+
+    
+    ESP_LOGI("TEST", "dto3: %s", dto3.toString().c_str());
+
 
     // Pas besoin de delete, le destructeur de `dto` s'en charge
 }

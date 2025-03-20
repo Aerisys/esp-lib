@@ -33,7 +33,6 @@ class ControllerRequestDTO {
 
         uint64_t getCounter() const;
         bool operator==(const ControllerRequestDTO&) const;
-        ControllerRequestDTO& operator=(const ControllerRequestDTO&);
 
         void ConvertJoyStickToFlightController(JoystickModel joystickModelLeft,JoystickModel joystickModelRight);
         ControllerRequestData toStruct() const;

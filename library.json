@@ -1,6 +1,6 @@
 {
     "name": "skylab-esp-lib",
-    "version": "1.0.15",
+    "version": "1.0.17",
     "description": "",
     "keywords": "",
     "repository":
@@ -17,7 +17,6 @@
       }
     ],
     "dependencies": {
-        "cJSON": "https://github.com/DaveGamble/cJSON.git"
     },
     "frameworks": ["espidf"],
     "platforms": ["espressif32"]
