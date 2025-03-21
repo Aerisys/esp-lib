@@ -2,7 +2,9 @@
 #include "JoystickModel.h"
 
 JoystickModel::JoystickModel(int x, int y)
-    : x(x), y(y) {}
+    : x((x >= -deadZone && x <= deadZone) ? 0 : x), 
+      y((y >= -deadZone && y <= deadZone) ? 0 : y) {}
+
 
 JoystickModel::JoystickModel(const JoystickModel& joystickModel)
     : x(joystickModel.x), y(joystickModel.y), roomForManeuver(joystickModel.roomForManeuver) {}
