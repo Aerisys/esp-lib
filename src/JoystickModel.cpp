@@ -2,8 +2,8 @@
 #include "JoystickModel.h"
 
 JoystickModel::JoystickModel(int x, int y)
-    : x((x >= -deadZone && x <= deadZone) ? 0 : x), 
-      y((y >= -deadZone && y <= deadZone) ? 0 : y) {}
+    : x((x >= (JOYSTICK_MAX/2-deadZone) && x <= (JOYSTICK_MAX/2+deadZone)) ? JOYSTICK_MAX/2 : x), 
+      y((y >= (JOYSTICK_MAX/2-deadZone) && y <= (JOYSTICK_MAX/2+deadZone)) ? JOYSTICK_MAX/2 : y) {}
 
 
 JoystickModel::JoystickModel(const JoystickModel& joystickModel)
