@@ -25,7 +25,7 @@ extern "C" void app_main() {
     ESP_LOGI("TEST", "dto2: %s", dto2.toString().c_str());
 
     ControllerRequestDTO dto3 = ControllerRequestDTO(dto2);
-
+    dto3.~ControllerRequestDTO();
     
     ESP_LOGI("TEST", "dto3: %s", dto3.toString().c_str());
 

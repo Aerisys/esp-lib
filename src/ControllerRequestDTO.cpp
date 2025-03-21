@@ -29,6 +29,25 @@ void ControllerRequestDTO::initCounter()
 {
     counter = ++ControllerRequestDTO::nmbInstanciation;
 }
+void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO &other)
+{
+    if(getCounter()>=other.getCounter()){return;}
+
+    counter = other.getCounter();
+    if(other.flightController){
+        delete flightController;
+        flightController = new FlightController(*other.flightController);
+    }
+    if(other.buttonEmergencyStop){
+        delete buttonEmergencyStop;
+        buttonEmergencyStop = new bool(*other.buttonEmergencyStop);
+    }
+    if(other.buttonMotorState){
+        delete buttonMotorState;
+        buttonMotorState = new bool(*other.buttonMotorState);
+    }
+}
+
 uint64_t ControllerRequestDTO::getCounter() const
 {
     return counter;

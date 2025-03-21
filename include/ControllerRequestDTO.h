@@ -25,6 +25,7 @@ class ControllerRequestDTO {
         ~ControllerRequestDTO();  // Destructeur pour libérer la mémoire
 
         void initCounter();
+        void addInControllerRequestDTO(const ControllerRequestDTO &other);
         
         FlightController* flightController = nullptr;
 
