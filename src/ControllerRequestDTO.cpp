@@ -108,6 +108,11 @@ void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joyst
     float yaw      = (joystickModelRight.x - JOYSTICK_MID) / JOYSTICK_MID;   // Rotation
     float throttle = (joystickModelRight.y - JOYSTICK_MID) / JOYSTICK_MID;   // Monter / descendre
 
+    if( pitch>= -deadZone && pitch <= deadZone){pitch=0;}
+    if( roll>= -deadZone && roll <= deadZone){roll=0;}
+    if( yaw>= -deadZone && yaw <= deadZone){yaw=0;}
+    if( throttle>= -deadZone && throttle <= deadZone){throttle=0;}
+
     flightController = new FlightController(pitch, roll, yaw, throttle);
 }
 ControllerRequestData ControllerRequestDTO::toStruct() const {

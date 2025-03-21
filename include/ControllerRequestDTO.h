@@ -26,6 +26,7 @@ class ControllerRequestDTO {
 
         void initCounter();
         void addInControllerRequestDTO(const ControllerRequestDTO &other);
+        float deadZone = 0.17f;
         
         FlightController* flightController = nullptr;
 

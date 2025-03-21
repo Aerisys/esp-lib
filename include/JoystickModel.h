@@ -8,7 +8,6 @@
 class JoystickModel {
     public:
         static const int JOYSTICK_MAX = 4095;
-        int deadZone = 400;
         int x;
         int y;
     
