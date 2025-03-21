@@ -7,9 +7,9 @@ ControllerRequestDTO::ControllerRequestDTO()
 }
 ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
     if (this != &other) {  // Protection auto-référence
-        delete flightController;
-        delete buttonEmergencyStop;
-        delete buttonMotorState;
+        delete flightController; flightController=nullptr;
+        delete buttonEmergencyStop; buttonEmergencyStop=nullptr;
+        delete buttonMotorState; buttonMotorState=nullptr;
 
         flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
         buttonEmergencyStop = other.buttonEmergencyStop ? new bool(*other.buttonEmergencyStop) : nullptr;
@@ -21,9 +21,9 @@ ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
 
 
 ControllerRequestDTO::~ControllerRequestDTO() {
-    delete flightController;
-    delete buttonMotorState;
-    delete buttonEmergencyStop;
+    delete flightController; flightController = nullptr;
+    delete buttonMotorState; buttonMotorState = nullptr;
+    delete buttonEmergencyStop; buttonEmergencyStop = nullptr;
 }
 void ControllerRequestDTO::initCounter()
 {
@@ -35,15 +35,15 @@ void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO 
 
     counter = other.getCounter();
     if(other.flightController){
-        delete flightController;
+        delete flightController; flightController = nullptr;
         flightController = new FlightController(*other.flightController);
     }
     if(other.buttonEmergencyStop){
-        delete buttonEmergencyStop;
+        delete buttonEmergencyStop; buttonEmergencyStop = nullptr;
         buttonEmergencyStop = new bool(*other.buttonEmergencyStop);
     }
     if(other.buttonMotorState){
-        delete buttonMotorState;
+        delete buttonMotorState; buttonMotorState = nullptr;
         buttonMotorState = new bool(*other.buttonMotorState);
     }
 }
