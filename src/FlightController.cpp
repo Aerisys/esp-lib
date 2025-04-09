@@ -8,7 +8,10 @@ FlightController::FlightController(float pitch, float roll, float yaw, float thr
 
 bool FlightController::isFullZero()
 {
-    if(pitch==0 && roll==0 && yaw ==0 && throttle ==0)
+    if(pitch==0 && roll==0 && yaw ==0 && throttle ==0){
+        return true;
+    }
+    return false;
 }
 
 bool FlightController::operator==(const FlightController &other) const
