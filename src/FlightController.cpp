@@ -6,7 +6,13 @@ FlightController::FlightController(const FlightController &flightController): pi
 
 FlightController::FlightController(float pitch, float roll, float yaw, float throttle): pitch(pitch), roll(roll), yaw(yaw), throttle(throttle) {}
 
-bool FlightController::operator==(const FlightController &other) const {
+bool FlightController::isFullZero()
+{
+    if(pitch==0 && roll==0 && yaw ==0 && throttle ==0)
+}
+
+bool FlightController::operator==(const FlightController &other) const
+{
     return (pitch == other.pitch && roll == other.roll && yaw == other.yaw && throttle == other.throttle);
 }
 

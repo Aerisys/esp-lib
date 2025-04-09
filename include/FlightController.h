@@ -22,6 +22,8 @@ class FlightController {
         float yaw;   // Lacet
         float throttle;
 
+        bool isFullZero();
+
         bool operator==(const FlightController&) const;
     
         FlightControllerData toStruct() const;
