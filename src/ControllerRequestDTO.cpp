@@ -38,9 +38,12 @@ void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO 
         delete flightController; flightController = nullptr;
         flightController = new FlightController(*other.flightController);
     }
-    if(other.buttonMotorArming){
-        delete buttonMotorArming; buttonMotorArming = nullptr;
-        buttonMotorArming = new bool(*other.buttonMotorArming);
+    if (other.buttonMotorArming && *other.buttonMotorArming){
+        if (buttonMotorArming) {
+            *buttonMotorArming = !*buttonMotorArming;
+        } else {
+            buttonMotorArming = new bool(!*other.buttonMotorArming); // toggle à false
+        }
     }
     if(other.buttonMotorState){
         delete buttonMotorState; buttonMotorState = nullptr;
