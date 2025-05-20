@@ -8,11 +8,11 @@ ControllerRequestDTO::ControllerRequestDTO()
 ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
     if (this != &other) {  // Protection auto-référence
         delete flightController; flightController=nullptr;
-        delete buttonEmergencyStop; buttonEmergencyStop=nullptr;
+        delete buttonMotorArming; buttonMotorArming=nullptr;
         delete buttonMotorState; buttonMotorState=nullptr;
 
         flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
-        buttonEmergencyStop = other.buttonEmergencyStop ? new bool(*other.buttonEmergencyStop) : nullptr;
+        buttonMotorArming = other.buttonMotorArming ? new bool(*other.buttonMotorArming) : nullptr;
         buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
 
         counter = other.counter;
@@ -23,7 +23,7 @@ ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other) {
 ControllerRequestDTO::~ControllerRequestDTO() {
     delete flightController; flightController = nullptr;
     delete buttonMotorState; buttonMotorState = nullptr;
-    delete buttonEmergencyStop; buttonEmergencyStop = nullptr;
+    delete buttonMotorArming; buttonMotorArming = nullptr;
 }
 void ControllerRequestDTO::initCounter()
 {
@@ -38,9 +38,9 @@ void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO 
         delete flightController; flightController = nullptr;
         flightController = new FlightController(*other.flightController);
     }
-    if(other.buttonEmergencyStop){
-        delete buttonEmergencyStop; buttonEmergencyStop = nullptr;
-        buttonEmergencyStop = new bool(*other.buttonEmergencyStop);
+    if(other.buttonMotorArming){
+        delete buttonMotorArming; buttonMotorArming = nullptr;
+        buttonMotorArming = new bool(*other.buttonMotorArming);
     }
     if(other.buttonMotorState){
         delete buttonMotorState; buttonMotorState = nullptr;
@@ -55,11 +55,11 @@ uint64_t ControllerRequestDTO::getCounter() const
 ControllerRequestDTO& ControllerRequestDTO::operator=(const ControllerRequestDTO &other) {
     if (this != &other) { // Protection auto-affectation
         delete flightController;
-        delete buttonEmergencyStop;
+        delete buttonMotorArming;
         delete buttonMotorState;
 
         flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
-        buttonEmergencyStop = other.buttonEmergencyStop ? new bool(*other.buttonEmergencyStop) : nullptr;
+        buttonMotorArming = other.buttonMotorArming ? new bool(*other.buttonMotorArming) : nullptr;
         buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
 
         counter = other.counter;
@@ -77,11 +77,11 @@ bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
         return false;
     }
 
-    // Vérifie si les deux pointeurs `buttonEmergencyStop` sont nuls
-    if (buttonEmergencyStop == nullptr && other.buttonEmergencyStop == nullptr) {
-    } else if (buttonEmergencyStop == nullptr || other.buttonEmergencyStop == nullptr) {
+    // Vérifie si les deux pointeurs `buttonMotorArming` sont nuls
+    if (buttonMotorArming == nullptr && other.buttonMotorArming == nullptr) {
+    } else if (buttonMotorArming == nullptr || other.buttonMotorArming == nullptr) {
         return false; // Un pointeur est nul, l'autre ne l'est pas
-    } else if (!(*buttonEmergencyStop == *(other.buttonEmergencyStop))) {
+    } else if (!(*buttonMotorArming == *(other.buttonMotorArming))) {
         return false;
     }
 
@@ -122,8 +122,8 @@ ControllerRequestData ControllerRequestDTO::toStruct() const {
     data.has_buttonMotorState = (buttonMotorState != nullptr);
     if (buttonMotorState) data.buttonMotorState = *buttonMotorState;
 
-    data.has_buttonEmergencyStop = (buttonEmergencyStop != nullptr);
-    if (buttonEmergencyStop) data.buttonEmergencyStop = *buttonEmergencyStop;
+    data.buttonMotorArming = (buttonMotorArming != nullptr);
+    if (buttonMotorArming) data.buttonMotorArming = *buttonMotorArming;
 
     data.has_flightController = (flightController != nullptr);
     if (flightController) data.flightController = flightController->toStruct();
@@ -136,7 +136,7 @@ ControllerRequestDTO ControllerRequestDTO::fromStruct(const ControllerRequestDat
     dto.counter = data.counter;
 
     if (data.has_buttonMotorState) dto.buttonMotorState = new bool(data.buttonMotorState);
-    if (data.has_buttonEmergencyStop) dto.buttonEmergencyStop = new bool(data.buttonEmergencyStop);
+    if (data.has_buttonMotorArming) dto.buttonMotorArming = new bool(data.buttonMotorArming);
     if (data.has_flightController) dto.flightController = new FlightController(FlightController::fromStruct(data.flightController));
 
     return dto;
@@ -147,7 +147,7 @@ std::string ControllerRequestDTO::toString() const
     std::ostringstream oss;
     oss << "(counter=" << counter 
         << ", buttonMotorState=" << (buttonMotorState ? std::to_string(*buttonMotorState) : "null")
-        << ", buttonEmergencyStop=" << (buttonEmergencyStop ? std::to_string(*buttonEmergencyStop) : "null")
+        << ", buttonMotorArming=" << (buttonMotorArming ? std::to_string(*buttonMotorArming) : "null")
         << ", flightController=" << (flightController ? flightController->toString() : "null") 
         << ")";
     return oss.str();

@@ -10,7 +10,7 @@ extern "C" void app_main() {
     // Création et assignation dynamique du FlightController
     dto.flightController = nullptr;
     dto.buttonMotorState = nullptr;
-    dto.buttonEmergencyStop = new bool(true);
+    dto.buttonMotorArming = new bool(true);
     dto.initCounter();
 
     // Affichage des logs avec `toString()`

@@ -10,8 +10,8 @@ typedef struct {
     bool has_buttonMotorState; // Indicateur de présence
     bool buttonMotorState;
 
-    bool has_buttonEmergencyStop; // Indicateur de présence
-    bool buttonEmergencyStop;
+    bool has_buttonMotorArming; // Indicateur de présence
+    bool buttonMotorArming;
 
     bool has_flightController; // Indicateur de présence
     FlightControllerData flightController;
@@ -31,7 +31,7 @@ class ControllerRequestDTO {
         FlightController* flightController = nullptr;
 
         bool* buttonMotorState = nullptr;
-        bool* buttonEmergencyStop = nullptr;
+        bool* buttonMotorArming = nullptr;
 
         uint64_t getCounter() const;
         bool operator==(const ControllerRequestDTO&) const;
