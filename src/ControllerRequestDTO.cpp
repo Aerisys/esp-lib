@@ -1,4 +1,3 @@
-#include "../include/ControllerRequestDTO.h"
 #include "ControllerRequestDTO.h"
 
 uint64_t ControllerRequestDTO::nmbInstanciation = 0;
