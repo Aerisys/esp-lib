@@ -1,23 +1,24 @@
 {
-    "name": "skylab-esp-lib",
-    "version": "1.0.23",
-    "description": "",
-    "keywords": "",
-    "repository":
+  "name": "skylab-esp-lib",
+  "version": "1.0.23",
+  "description": "",
+  "keywords": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SkylabYnov/skylab-esp-lib.git"
+  },
+  "authors": [
     {
-      "type": "git",
-      "url": "https://github.com/SkylabYnov/skylab-esp-lib.git"
-    },
-    "authors":
-    [
-      {
-        "name": "sacha Barbet",
-        "email": "sacha.barbet@ynov.com",
-        "maintainer": true
-      }
-    ],
-    "dependencies": {
-    },
-    "frameworks": ["espidf"],
-    "platforms": ["espressif32"]
-  }
+      "name": "Skylabs",
+      "email": "contact@skylabs.fr",
+      "maintainer": true
+    }
+  ],
+  "dependencies": {},
+  "frameworks": [
+    "espidf"
+  ],
+  "platforms": [
+    "espressif32"
+  ]
+}
