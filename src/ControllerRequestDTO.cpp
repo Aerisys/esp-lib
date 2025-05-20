@@ -69,6 +69,7 @@ uint64_t ControllerRequestDTO::getCounter() const
 {
     return counter;
 }
+
 ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO &other)
 {
     if (this != &other)
@@ -130,37 +131,44 @@ bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
     // Si tout est égal
     return true;
 }
+
 void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joystickModelLeft, JoystickModel joystickModelRight)
 {
-    // Valeurs maximales des joysticks
+    const float JOYSTICK_MIN = 0.0f;
+    const float JOYSTICK_MAX = JoystickModel::JOYSTICK_MAX; // e.g., 4000
+    const float JOYSTICK_MID = JOYSTICK_MAX / 2.0f;         // e.g., 2000
 
-    const float JOYSTICK_MID = JoystickModel::JOYSTICK_MAX / 2.0f; // Centre des joysticks (2000)
-
-    // Normalisation des valeurs (-1.0 à 1.0 pour pitch, roll et yaw)
-    float throttle = (joystickModelLeft.y - JOYSTICK_MID) / JOYSTICK_MID; // Monter / descendre
-    float yaw = (joystickModelLeft.x - JOYSTICK_MID) / JOYSTICK_MID;      // Rotation
-    float pitch = (joystickModelRight.y - JOYSTICK_MID) / JOYSTICK_MID;   // Avant / arrière
-    float roll = (joystickModelRight.x - JOYSTICK_MID) / JOYSTICK_MID;    // Gauche / droite
-
-    if (pitch >= -deadZone && pitch <= deadZone)
+    // Normalize roll, pitch, yaw: [-1, 1]
+    auto NormalizeCentered = [JOYSTICK_MID](float value)
     {
+        return (value - JOYSTICK_MID) / JOYSTICK_MID;
+    };
+
+    // Normalize throttle: [0, 1]
+    auto NormalizePositive = [JOYSTICK_MIN, JOYSTICK_MAX](float value)
+    {
+        return (value - JOYSTICK_MIN) / (JOYSTICK_MAX - JOYSTICK_MIN);
+    };
+
+    float throttle = NormalizePositive(joystickModelLeft.y); // 0 to 1
+    float yaw = NormalizeCentered(joystickModelLeft.x);      // -1 to 1
+    float pitch = NormalizeCentered(joystickModelRight.y);   // -1 to 1
+    float roll = NormalizeCentered(joystickModelRight.x);    // -1 to 1
+
+    // Apply dead zone only to pitch, roll, yaw
+    if (std::abs(pitch) < deadZone)
         pitch = 0;
-    }
-    if (roll >= -deadZone && roll <= deadZone)
-    {
+    if (std::abs(roll) < deadZone)
         roll = 0;
-    }
-    if (yaw >= -deadZone && yaw <= deadZone)
-    {
+    if (std::abs(yaw) < deadZone)
         yaw = 0;
-    }
-    if (throttle >= -deadZone && throttle <= deadZone)
-    {
-        throttle = 0;
-    }
+
+    // Optional: Clamp throttle to [0, 1] just in case
+    throttle = std::clamp(throttle, 0.0f, 1.0f);
 
     flightController = new FlightController(pitch, roll, yaw, throttle);
 }
+
 ControllerRequestData ControllerRequestDTO::toStruct() const
 {
     ControllerRequestData data = {};
