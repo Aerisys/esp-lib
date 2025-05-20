@@ -4,10 +4,11 @@
 JoystickModel::JoystickModel(int x, int y)
     : x(x), y(y) {}
 
-JoystickModel::JoystickModel(const JoystickModel& joystickModel)
+JoystickModel::JoystickModel(const JoystickModel &joystickModel)
     : x(joystickModel.x), y(joystickModel.y), roomForManeuver(joystickModel.roomForManeuver) {}
 
-bool JoystickModel::operator==(const JoystickModel& other) const {
+bool JoystickModel::operator==(const JoystickModel &other) const
+{
     return (x >= other.x - roomForManeuver && x <= other.x + roomForManeuver &&
             y >= other.y - roomForManeuver && y <= other.y + roomForManeuver);
 }
