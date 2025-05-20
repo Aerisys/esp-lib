@@ -3,7 +3,8 @@
 #include "FlightController.h"
 #include "ControllerRequestDTO.h"
 
-extern "C" void app_main() {
+extern "C" void app_main()
+{
     // Création du DTO
     ControllerRequestDTO dto;
 
@@ -16,19 +17,16 @@ extern "C" void app_main() {
     // Affichage des logs avec `toString()`
     ESP_LOGI("TEST", "dto: %s", dto.toString().c_str());
 
-    
     ControllerRequestData dtodata = dto.toStruct();
 
     ControllerRequestDTO dto2 = ControllerRequestDTO::fromStruct(dtodata);
 
-    
     ESP_LOGI("TEST", "dto2: %s", dto2.toString().c_str());
 
     ControllerRequestDTO dto3 = ControllerRequestDTO(dto2);
     dto3.~ControllerRequestDTO();
-    
-    ESP_LOGI("TEST", "dto3: %s", dto3.toString().c_str());
 
+    ESP_LOGI("TEST", "dto3: %s", dto3.toString().c_str());
 
     // Pas besoin de delete, le destructeur de `dto` s'en charge
 }

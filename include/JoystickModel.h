@@ -5,22 +5,23 @@
 #include <sstream>
 #include <iostream>
 
-class JoystickModel {
-    public:
-        static const int JOYSTICK_MAX = 4095;
-        int x;
-        int y;
-    
-        JoystickModel(int x, int y);
-        JoystickModel(const JoystickModel& joystickModel);
-        JoystickModel() : x(0), y(0) {}
-    
-        bool operator==(const JoystickModel&) const;
+class JoystickModel
+{
+public:
+    static const int JOYSTICK_MAX = 4095;
+    int x;
+    int y;
 
-        std::string toString() const;
-    
-    private:
-        int roomForManeuver = 50;
-    };
+    JoystickModel(int x, int y);
+    JoystickModel(const JoystickModel &joystickModel);
+    JoystickModel() : x(0), y(0) {}
+
+    bool operator==(const JoystickModel &) const;
+
+    std::string toString() const;
+
+private:
+    int roomForManeuver = 50;
+};
 
 #endif

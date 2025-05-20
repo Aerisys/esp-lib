@@ -5,31 +5,32 @@
 #include <sstream>
 #include <iostream>
 
-typedef struct {
+typedef struct
+{
     float pitch, roll, yaw, throttle;
 } FlightControllerData;
 
-class FlightController {
-    private:
-    
-    public:
-        FlightController();
-        FlightController(const FlightController& flightController);
-        FlightController(float pitch, float rool, float yaw, float throttle);
-    
-        float pitch; // Tangage
-        float roll;  // Roulis
-        float yaw;   // Lacet
-        float throttle;
+class FlightController
+{
+private:
+public:
+    FlightController();
+    FlightController(const FlightController &flightController);
+    FlightController(float pitch, float rool, float yaw, float throttle);
 
-        bool isFullZero();
+    float pitch; // Tangage
+    float roll;  // Roulis
+    float yaw;   // Lacet
+    float throttle;
 
-        bool operator==(const FlightController&) const;
-    
-        FlightControllerData toStruct() const;
-        static FlightController fromStruct(const FlightControllerData& data);
+    bool isFullZero();
 
-        std::string toString() const;
+    bool operator==(const FlightController &) const;
+
+    FlightControllerData toStruct() const;
+    static FlightController fromStruct(const FlightControllerData &data);
+
+    std::string toString() const;
 };
 
 #endif
