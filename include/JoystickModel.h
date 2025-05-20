@@ -8,7 +8,7 @@
 class JoystickModel
 {
 public:
-    static const int JOYSTICK_MAX = 4095;
+    static const int JOYSTICK_MAX = 2047;
     int x;
     int y;
 

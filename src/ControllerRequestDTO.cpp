@@ -150,10 +150,10 @@ void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joyst
         return (value - JOYSTICK_MIN) / (JOYSTICK_MAX - JOYSTICK_MIN);
     };
 
-    float throttle = NormalizePositive(joystickModelLeft.y); // 0 to 1
-    float yaw = NormalizeCentered(joystickModelLeft.x);      // -1 to 1
-    float pitch = NormalizeCentered(joystickModelRight.y);   // -1 to 1
-    float roll = NormalizeCentered(joystickModelRight.x);    // -1 to 1
+    float throttle = 1.0f - NormalizePositive(joystickModelLeft.y); // 0 to 1
+    float yaw = -NormalizeCentered(joystickModelLeft.x);      // -1 to 1
+    float pitch = -NormalizeCentered(joystickModelRight.y);   // -1 to 1
+    float roll = -NormalizeCentered(joystickModelRight.x);    // -1 to 1
 
     // Apply dead zone only to pitch, roll, yaw
     if (std::abs(pitch) < deadZone)
