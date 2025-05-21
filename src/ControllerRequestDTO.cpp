@@ -177,7 +177,7 @@ ControllerRequestData ControllerRequestDTO::toStruct() const
     if (buttonMotorState)
         data.buttonMotorState = *buttonMotorState;
 
-    data.buttonMotorArming = (buttonMotorArming != nullptr);
+    data.has_buttonMotorArming = (buttonMotorArming != nullptr);
     if (buttonMotorArming)
         data.buttonMotorArming = *buttonMotorArming;
 
