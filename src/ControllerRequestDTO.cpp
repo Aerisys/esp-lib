@@ -38,7 +38,7 @@ void ControllerRequestDTO::initCounter()
 }
 void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO &other)
 {
-    if (getCounter() >= other.getCounter())
+    if (getCounter() >= other.getCounter() && other.getCounter() != 0)
     {
         return;
     }
