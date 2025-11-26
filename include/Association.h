@@ -1,9 +1,6 @@
 #include <cstdint>
 
 typedef struct {
-    uint8_t droneMac[6];
-} AssociationRequestDTO;
-
-typedef struct {
-    uint8_t controllerMac[6];
-} AssociationResponseDTO;
+    char magic[12];
+    uint8_t mac[6];
+} PairingPacket;
