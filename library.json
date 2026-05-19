@@ -1,16 +1,16 @@
 {
-  "name": "skylab-esp-lib",
-  "version": "1.0.26",
+  "name": "esp-lib",
+  "version": "1.0.27",
   "description": "",
   "keywords": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SkylabYnov/skylab-esp-lib.git"
+    "url": "https://github.com/Aerisys/esp-lib.git"
   },
   "authors": [
     {
-      "name": "Skylabs",
-      "email": "contact@skylabs.fr",
+      "name": "Aerisys",
+      "email": "contact@aerisys.fr",
       "maintainer": true
     }
   ],
