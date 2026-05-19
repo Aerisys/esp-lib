@@ -16,7 +16,13 @@ public:
     JoystickModel(const JoystickModel &joystickModel);
     JoystickModel() : x(0), y(0) {}
 
+    // Explicitly defaulted to silence -Wdeprecated-copy: with a
+    // user-provided copy ctor and no operator=, GCC warns that the
+    // implicit operator= is deprecated.
+    JoystickModel& operator=(const JoystickModel &) = default;
+
     bool operator==(const JoystickModel &) const;
+    bool operator!=(const JoystickModel &other) const { return !(*this == other); }
 
     std::string toString() const;
 
