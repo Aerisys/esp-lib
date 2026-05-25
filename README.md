@@ -7,6 +7,7 @@ Définit les paquets sérialisables échangés entre les deux firmwares :
 - **`ControllerRequestDTO`** — commandes pilote (flightController + boutons + compteur)
 - **`PingRequestDTO`** — keepalive radio
 - **`PairingPacket`** — handshake d'appairage
+- **`TelemetryDTO`** — *(v1.2.0)* snapshot IMU + motorSpeeds, drone → controller
 - **`FlightController`** / **`JoystickModel`** — modèles utilitaires
 
 ## Quick start (consommateur)
@@ -28,6 +29,17 @@ dto.initCounter();
 ControllerRequestData wire = dto.toStruct();
 esp_now_send(peer_mac, (uint8_t*)&wire, sizeof(wire));
 ```
+
+## v1.2.0 — Additive
+
+Ajout de [`TelemetryDTO`](include/TelemetryDTO.h) : un seul ESP-NOW packet
+drone → controller qui contient un snapshot IMU atomique (accel, gyro, mag,
+orientation, **quaternion**, temperature, **timestamp**) + `motorSpeeds[4]`.
+
+Dépend de `imu_sensor.h` (imu-lib). Le consommateur doit avoir `imu-lib`
+dans ses `lib_deps`.
+
+Non-breaking : l'API v1.1.0 reste identique. Voir [AGENTS.md](docs/AGENTS.md#nouveau-en-v120).
 
 ## v1.1.0 — Breaking changes
 
