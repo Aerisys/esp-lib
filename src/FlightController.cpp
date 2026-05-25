@@ -1,6 +1,9 @@
 #include "FlightController.h"
 
-FlightController::FlightController() : pitch(0.0f), roll(0.0f), yaw(0.0f) {}
+// throttle was previously uninitialised by this default ctor — reading it
+// before any assignment was undefined behaviour (random startup throttle).
+// Now explicitly zero on all four axes.
+FlightController::FlightController() : pitch(0.0f), roll(0.0f), yaw(0.0f), throttle(0.0f) {}
 
 FlightController::FlightController(const FlightController &flightController) : pitch(flightController.pitch), roll(flightController.roll), yaw(flightController.yaw), throttle(flightController.throttle) {}
 

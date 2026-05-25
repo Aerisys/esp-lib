@@ -18,6 +18,11 @@ public:
     FlightController(const FlightController &flightController);
     FlightController(float pitch, float rool, float yaw, float throttle);
 
+    // Explicitly defaulted to silence -Wdeprecated-copy: with a user-provided
+    // copy ctor and no operator=, GCC warns that the implicit operator= is
+    // deprecated. Same pattern as JoystickModel.
+    FlightController& operator=(const FlightController&) = default;
+
     float pitch; // Tangage
     float roll;  // Roulis
     float yaw;   // Lacet

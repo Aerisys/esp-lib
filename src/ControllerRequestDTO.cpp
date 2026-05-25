@@ -1,66 +1,44 @@
 #include "ControllerRequestDTO.h"
 
 uint64_t ControllerRequestDTO::nmbInstanciation = 0;
-ControllerRequestDTO::ControllerRequestDTO()
-{
-}
-ControllerRequestDTO::ControllerRequestDTO(const ControllerRequestDTO &other)
-{
-    if (this != &other)
-    { // Protection auto-référence
-        delete flightController;
-        flightController = nullptr;
-        delete buttonMotorArming;
-        buttonMotorArming = nullptr;
-        delete buttonMotorState;
-        buttonMotorState = nullptr;
 
-        flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
-        buttonMotorArming = other.buttonMotorArming ? new bool(*other.buttonMotorArming) : nullptr;
-        buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
-
-        counter = other.counter;
-    }
-}
-
-ControllerRequestDTO::~ControllerRequestDTO()
-{
-    delete flightController;
-    flightController = nullptr;
-    delete buttonMotorState;
-    buttonMotorState = nullptr;
-    delete buttonMotorArming;
-    buttonMotorArming = nullptr;
-}
 void ControllerRequestDTO::initCounter()
 {
     counter = ++ControllerRequestDTO::nmbInstanciation;
 }
+
 void ControllerRequestDTO::addInControllerRequestDTO(const ControllerRequestDTO &other)
 {
+    // De-dup / out-of-order protection: ignore packets whose counter is not
+    // strictly more recent than ours. Counter == 0 is treated as "no counter
+    // set", so any incoming value can apply.
+    //
+    // NOTE: A controller reboot resets its counter to 0 and the drone will
+    // refuse subsequent packets until the new counter overtakes the old
+    // maximum. The drone side is expected to handle the reset (e.g. via a
+    // timeout that re-syncs the counter). Tracked separately, not addressed
+    // in v1.1.0.
     if (getCounter() >= other.getCounter() && other.getCounter() != 0)
     {
         return;
     }
 
     counter = other.getCounter();
-    if (other.flightController)
+
+    if (other.has_flightController)
     {
-        delete flightController;
-        flightController = nullptr;
-        flightController = new FlightController(*other.flightController);
+        flightController     = other.flightController;
+        has_flightController = true;
     }
-    if (other.buttonMotorArming)
+    if (other.has_buttonMotorArming)
     {
-        delete buttonMotorArming;
-        buttonMotorArming = nullptr;
-        buttonMotorArming = new bool(*other.buttonMotorArming);
+        buttonMotorArming     = other.buttonMotorArming;
+        has_buttonMotorArming = true;
     }
-    if (other.buttonMotorState)
+    if (other.has_buttonMotorState)
     {
-        delete buttonMotorState;
-        buttonMotorState = nullptr;
-        buttonMotorState = new bool(*other.buttonMotorState);
+        buttonMotorState     = other.buttonMotorState;
+        has_buttonMotorState = true;
     }
 }
 
@@ -69,103 +47,52 @@ uint64_t ControllerRequestDTO::getCounter() const
     return counter;
 }
 
-ControllerRequestDTO &ControllerRequestDTO::operator=(const ControllerRequestDTO &other)
-{
-    if (this != &other)
-    { // Protection auto-affectation
-        delete flightController;
-        delete buttonMotorArming;
-        delete buttonMotorState;
-
-        flightController = other.flightController ? new FlightController(*other.flightController) : nullptr;
-        buttonMotorArming = other.buttonMotorArming ? new bool(*other.buttonMotorArming) : nullptr;
-        buttonMotorState = other.buttonMotorState ? new bool(*other.buttonMotorState) : nullptr;
-
-        counter = other.counter;
-    }
-    return *this;
-}
-
 bool ControllerRequestDTO::operator==(const ControllerRequestDTO &other) const
 {
-    // Vérifie si les deux pointeurs `joystickLeft` sont nuls
-    if (flightController == nullptr && other.flightController == nullptr)
-    {
-    }
-    else if (flightController == nullptr || other.flightController == nullptr)
-    {
-        return false; // Un pointeur est nul, l'autre ne l'est pas
-    }
-    else if (!(*flightController == *(other.flightController)))
-    {
-        return false;
-    }
+    if (has_flightController != other.has_flightController) return false;
+    if (has_flightController && !(flightController == other.flightController)) return false;
 
-    // Vérifie si les deux pointeurs `buttonMotorArming` sont nuls
-    if (buttonMotorArming == nullptr && other.buttonMotorArming == nullptr)
-    {
-    }
-    else if (buttonMotorArming == nullptr || other.buttonMotorArming == nullptr)
-    {
-        return false; // Un pointeur est nul, l'autre ne l'est pas
-    }
-    else if (!(*buttonMotorArming == *(other.buttonMotorArming)))
-    {
-        return false;
-    }
+    if (has_buttonMotorArming != other.has_buttonMotorArming) return false;
+    if (has_buttonMotorArming && buttonMotorArming != other.buttonMotorArming) return false;
 
-    // Vérifie si les deux pointeurs `buttonMotorState` sont nuls
-    if (buttonMotorState == nullptr && other.buttonMotorState == nullptr)
-    {
-    }
-    else if (buttonMotorState == nullptr || other.buttonMotorState == nullptr)
-    {
-        return false; // Un pointeur est nul, l'autre ne l'est pas
-    }
-    else if (!(*buttonMotorState == *(other.buttonMotorState)))
-    {
-        return false;
-    }
+    if (has_buttonMotorState != other.has_buttonMotorState) return false;
+    if (has_buttonMotorState && buttonMotorState != other.buttonMotorState) return false;
 
-    // Si tout est égal
     return true;
 }
 
 void ControllerRequestDTO::ConvertJoyStickToFlightController(JoystickModel joystickModelLeft, JoystickModel joystickModelRight)
 {
     const float JOYSTICK_MIN = 0.0f;
-    const float JOYSTICK_MAX = JoystickModel::JOYSTICK_MAX; // e.g., 4000
-    const float JOYSTICK_MID = JOYSTICK_MAX / 2.0f;         // e.g., 2000
+    const float JOYSTICK_MAX = JoystickModel::JOYSTICK_MAX;
+    const float JOYSTICK_MID = JOYSTICK_MAX / 2.0f;
 
-    // Normalize roll, pitch, yaw: [-1, 1]
     auto NormalizeCentered = [JOYSTICK_MID](float value)
     {
         return (value - JOYSTICK_MID) / JOYSTICK_MID;
     };
 
-    // Normalize throttle: [0, 1]
     auto NormalizePositive = [JOYSTICK_MIN, JOYSTICK_MAX](float value)
     {
         return (value - JOYSTICK_MIN) / (JOYSTICK_MAX - JOYSTICK_MIN);
     };
 
-    float throttle = 1.0f - NormalizePositive(joystickModelLeft.y); // 0 to 1
-    float yaw = -NormalizeCentered(joystickModelLeft.x);      // -1 to 1
-    float pitch = -NormalizeCentered(joystickModelRight.y);   // -1 to 1
-    float roll = -NormalizeCentered(joystickModelRight.x);    // -1 to 1
+    float throttle = 1.0f - NormalizePositive(joystickModelLeft.y);   // 0..1
+    float yaw      = -NormalizeCentered(joystickModelLeft.x);         // -1..1
+    float pitch    = -NormalizeCentered(joystickModelRight.y);        // -1..1
+    float roll     = -NormalizeCentered(joystickModelRight.x);        // -1..1
 
-    // Apply dead zone only to pitch, roll, yaw
-    if (std::abs(pitch) < deadZone)
-        pitch = 0;
-    if (std::abs(roll) < deadZone)
-        roll = 0;
-    if (std::abs(yaw) < deadZone)
-        yaw = 0;
+    if (std::abs(pitch) < deadZone) pitch = 0;
+    if (std::abs(roll)  < deadZone) roll  = 0;
+    if (std::abs(yaw)   < deadZone) yaw   = 0;
 
-    // Optional: Clamp throttle to [0, 1] just in case
     throttle = std::clamp(throttle, 0.0f, 1.0f);
 
-    flightController = new FlightController(pitch, roll, yaw, throttle);
+    // Assignation par valeur — pas de heap, pas de fuite si appelée plusieurs
+    // fois consécutives (l'ancien code faisait `new FlightController(...)`
+    // sans `delete` préalable et fuitait à chaque appel).
+    flightController     = FlightController(pitch, roll, yaw, throttle);
+    has_flightController = true;
 }
 
 ControllerRequestData ControllerRequestDTO::toStruct() const
@@ -173,32 +100,43 @@ ControllerRequestData ControllerRequestDTO::toStruct() const
     ControllerRequestData data = {};
     data.counter = counter;
 
-    data.has_buttonMotorState = (buttonMotorState != nullptr);
-    if (buttonMotorState)
-        data.buttonMotorState = *buttonMotorState;
+    data.has_buttonMotorState = has_buttonMotorState;
+    if (has_buttonMotorState)
+        data.buttonMotorState = buttonMotorState;
 
-    data.has_buttonMotorArming = (buttonMotorArming != nullptr);
-    if (buttonMotorArming)
-        data.buttonMotorArming = *buttonMotorArming;
+    data.has_buttonMotorArming = has_buttonMotorArming;
+    if (has_buttonMotorArming)
+        data.buttonMotorArming = buttonMotorArming;
 
-    data.has_flightController = (flightController != nullptr);
-    if (flightController)
-        data.flightController = flightController->toStruct();
+    data.has_flightController = has_flightController;
+    if (has_flightController)
+        data.flightController = flightController.toStruct();
 
     return data;
 }
 
 ControllerRequestDTO ControllerRequestDTO::fromStruct(const ControllerRequestData &data)
 {
+    // Zero heap allocations: safe to call from the ESP-NOW receive callback
+    // (ISR-like Wi-Fi context). The whole DTO is stack/value-allocated.
     ControllerRequestDTO dto;
     dto.counter = data.counter;
 
     if (data.has_buttonMotorState)
-        dto.buttonMotorState = new bool(data.buttonMotorState);
+    {
+        dto.has_buttonMotorState = true;
+        dto.buttonMotorState     = data.buttonMotorState;
+    }
     if (data.has_buttonMotorArming)
-        dto.buttonMotorArming = new bool(data.buttonMotorArming);
+    {
+        dto.has_buttonMotorArming = true;
+        dto.buttonMotorArming     = data.buttonMotorArming;
+    }
     if (data.has_flightController)
-        dto.flightController = new FlightController(FlightController::fromStruct(data.flightController));
+    {
+        dto.has_flightController = true;
+        dto.flightController     = FlightController::fromStruct(data.flightController);
+    }
 
     return dto;
 }
@@ -207,9 +145,9 @@ std::string ControllerRequestDTO::toString() const
 {
     std::ostringstream oss;
     oss << "(counter=" << counter
-        << ", buttonMotorState=" << (buttonMotorState ? std::to_string(*buttonMotorState) : "null")
-        << ", buttonMotorArming=" << (buttonMotorArming ? std::to_string(*buttonMotorArming) : "null")
-        << ", flightController=" << (flightController ? flightController->toString() : "null")
+        << ", buttonMotorState="  << (has_buttonMotorState  ? std::to_string(buttonMotorState)  : "null")
+        << ", buttonMotorArming=" << (has_buttonMotorArming ? std::to_string(buttonMotorArming) : "null")
+        << ", flightController="  << (has_flightController  ? flightController.toString()       : "null")
         << ")";
     return oss.str();
 }

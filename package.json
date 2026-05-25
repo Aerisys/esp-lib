@@ -1,8 +1,8 @@
 {
   "name": "esp-lib",
-  "version": "1.0.27",
-  "description": "",
-  "keywords": [],
+  "version": "1.1.0",
+  "description": "Shared DTOs and models for Aerisys ESP-NOW link (controller <-> drone)",
+  "keywords": ["esp-now", "dto", "controller", "drone", "esp32", "esp-idf", "aerisys"],
   "repository": {
     "type": "git",
     "url": "https://github.com/Aerisys/esp-lib.git"
