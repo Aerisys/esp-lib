@@ -1,24 +1,45 @@
 {
-  "name": "esp-lib",
-  "version": "1.0.27",
-  "description": "",
-  "keywords": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Aerisys/esp-lib.git"
-  },
-  "authors": [
-    {
-      "name": "Aerisys",
-      "email": "contact@aerisys.fr",
-      "maintainer": true
+    "name": "esp-lib",
+    "version": "1.0.27",
+    "description": "Shared DTOs and models for Aerisys ESP-NOW link (controller <-> drone)",
+    "keywords": ["esp-now", "dto", "controller", "drone", "esp32", "esp-idf", "aerisys"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Aerisys/esp-lib.git"
+    },
+    "authors": [
+        {
+            "name": "Aerisys",
+            "email": "contact@aerisys.fr",
+            "maintainer": true
+        }
+    ],
+    "dependencies": {},
+    "frameworks": ["espidf"],
+    "platforms": ["espressif32"],
+    "export": {
+        "include": [
+            "src/*.cpp",
+            "include/*.h",
+            "library.json",
+            "README*",
+            "LICEN*"
+        ],
+        "exclude": [
+            "examples",
+            "test",
+            "lib",
+            "docs",
+            "platformio.ini",
+            "CMakeLists.txt",
+            "src/CMakeLists.txt",
+            "sdkconfig*"
+        ]
+    },
+    "build": {
+        "srcFilter": [
+            "+<*.cpp>"
+        ],
+        "includeDir": "include"
     }
-  ],
-  "dependencies": {},
-  "frameworks": [
-    "espidf"
-  ],
-  "platforms": [
-    "espressif32"
-  ]
 }

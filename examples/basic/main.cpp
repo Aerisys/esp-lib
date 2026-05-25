@@ -1,10 +1,14 @@
 // -----------------------------------------------------------------------------
-// esp-lib — standalone sanity-check entry point.
+// esp-lib — Basic standalone example (sanity check).
 // -----------------------------------------------------------------------------
-// This file builds an `app_main()` so the lib can be flashed on its own as a
-// PlatformIO project to verify the DTOs serialize correctly. It is moved to
-// `examples/basic/` and excluded from consumer builds in v1.1.0 (task E3) —
-// kept here in src/ for the E1 commit boundary only.
+// This file is NOT part of the library payload. It exists only to allow
+// building and flashing the lib as a standalone PlatformIO / ESP-IDF project,
+// to verify that the DTOs serialize/deserialize correctly after a change.
+//
+// When `esp-lib` is consumed as a dependency by another project (drone,
+// controller), this file is NOT compiled: PlatformIO's library manager only
+// pulls `src/*.cpp` + `include/*.h` via the rules in `library.json`, and the
+// standalone CMakeLists only adds this example when present.
 // -----------------------------------------------------------------------------
 
 #include <esp_log.h>
