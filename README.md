@@ -30,14 +30,22 @@ ControllerRequestData wire = dto.toStruct();
 esp_now_send(peer_mac, (uint8_t*)&wire, sizeof(wire));
 ```
 
+## v1.2.1 — Hotfix : TelemetryDTO autonome
+
+Le `TelemetryDTO` (introduit en v1.2.0) utilise désormais des types POD
+locaux (`TelemetryVector3` etc.) au lieu de pulled `<imu_sensor.h>` depuis
+imu-lib. **esp-lib n'a plus aucune dépendance externe** — un consommateur
+sans IMU (controller, ground station) n'a plus à embarquer imu-lib.
+
+Le drone, qui utilise imu-lib pour son capteur, convertit ses types
+`IMUSensor::*` vers `Telemetry*` côté émission (aggregate init trivial,
+même layout / mêmes noms de champs).
+
 ## v1.2.0 — Additive
 
 Ajout de [`TelemetryDTO`](include/TelemetryDTO.h) : un seul ESP-NOW packet
 drone → controller qui contient un snapshot IMU atomique (accel, gyro, mag,
 orientation, **quaternion**, temperature, **timestamp**) + `motorSpeeds[4]`.
-
-Dépend de `imu_sensor.h` (imu-lib). Le consommateur doit avoir `imu-lib`
-dans ses `lib_deps`.
 
 Non-breaking : l'API v1.1.0 reste identique. Voir [AGENTS.md](docs/AGENTS.md#nouveau-en-v120).
 
